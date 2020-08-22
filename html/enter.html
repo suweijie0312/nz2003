@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/enter.css">
+</head>
+<body>
+    <div class="box">
+        <div class="box1" class="clear_fix">
+            <div class="logo">
+                <a href="./index.html"><img src="https://id1.cloud.huawei.com/CAS/up/idmw_rss_55/logos/HUAWEI.svg" alt=""></a>
+            </div>
+            <p class="box2">|<a href="./index.html">华为商城</a></p>
+        </div>
+    </div>
+
+  <div class="box3">
+      <div class="box4">
+        <p class="p1">华为账号登录</p>
+      </div>
+      <div class="box5" class="clear_fix">
+          <div class="box6">
+              <div class="box7"><img class="center_fix" src="../images/2.png" alt=""></div>
+              <div class="box8">
+                  <p class="p2">若您使用华为手机，请进入“设置”>“华为帐号”扫码登录。</p>
+              </div>
+          </div>
+          <div class="box9">
+              <input class="input1" type="text" placeholder="手机号/华为号/邮箱号"><br>
+              <input class="input2" type="text" placeholder="密码"><br>
+              <p class="p3"><a href="./enter1.html">短信验证码登录</a></p><br>
+              <div class="box15"><button class="button1">登录</button></div>
+              <div class="box10">
+                  <ul class="ul1" class="lcear_fix">
+                      <li><a href="./land.html">注册</a></li>
+                      <li><a href="#">忘记密码</a></li>
+                      <li><a href="#">更多</a></li> 
+                  </ul>
+              </div>
+              <div class="box11">
+                  <ul class="ul2" class="clear_fix">
+                      <li><a href="#">QQ</a></li>
+                      <li><a href="#">ZFB</a></li>
+                      <li><a href="#">WX</a></li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="box12">
+    <div class="box13">
+    <div class="box14" class="clear_fix">
+      <ul class="ul3" > 
+        <li><a href="#">华为账号与云空间用户协议</a></li>
+        <li><a href="#">关于华为账号与云空间隐私说明</a></li>
+        <li><a href="#">常见问题</a></li>
+        <li><a href="#">Cookie</a></li>
+      </ul>
+    </div>
+    <p class="p4">Copyright © 2011-2020  华为软件技术有限公司  版权所有  保留一切权利  苏B2-20070200号 | 苏ICP备09062682号-9</p>
+    </div>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/tools.js"></script>
+    <script>
+      const oBtn = document.querySelector('button')
+      const oIptName = document.querySelector('.input1')
+      const oIptPwd = document.querySelector('.input2')
+      oBtn.addEventListener('click',()=>{
+         let oIptNameVal = oIptName.value;
+         let oIptPwdVal = oIptPwd.value;
+         $.ajax({
+             url:'../server/goods_login.php',
+             type:'post',
+             data:{userName:oIptNameVal,userPwd:oIptPwdVal},
+             dataType:'json',
+             success:(result)=>{
+            //  console.log(result);
+            if(result.res === 1){
+                mySetCookie('login', 1 , 7*24*60*60)
+                 window.alert('登录成功，点击确定，返回上一页面')
+                 let url = decodeURI(window.location.search).substr( decodeURI(window.location.search).indexOf("=")+1)
+                 window.location.href = url;
+             }else{
+                window.alert('登录失败')
+               }
+             }
+         })
+      })
+    </script>
+</body>
+</html>

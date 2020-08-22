@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/land.css">
+</head>
+<body>
+<div class="box">
+    <div class="box1" class="clear_fix">
+        <div class="logo">
+            <a href="./index.html"><img src="https://id1.cloud.huawei.com/CAS/up/idmw_rss_55/logos/HUAWEI.svg" alt=""></a>
+        </div>
+        <p class="box2">|<a href="">华为商城</a></p>
+    </div>
+</div>
+<div class="box3">
+  <div class="box4" class="clear_fix">
+    <div class="box5">
+      <div class="box7"><a href="./land.html">手机号注册</a></div>
+      <div class="box8"><a href="./land1.html">邮箱地址注册</a></div>
+    </div>
+    <div class="box6">
+        <div class="box9">
+        <h1 class="h1">华为账号注册</h1>
+        <p class="p1">已有账号,<a href="./enter.html">去登陆></a></p>
+        <span name="nameSpan"></span><input style="float: left;" name="name" type="text" placeholder="请输入手机号"><br>
+        <div class="box10" class="clear_fix"><input name="vc" type="text" placeholder="短信验证码"><a name="vc_a" href="#">点击获取</a><span name="vcSpan1"></span>
+        <span name="vcSpan2"></span></div><br>
+        <span>不要超过50位数</span><input name="pwd1" type="password" placeholder="密码"><br>
+        <span name="nameSpan1"></span><input name="pwd2" type="password" placeholder="确认密码"><br>
+        <div class="box11"><button class="button1">注册</button></div>
+    </div>
+    </div>
+</div>
+</div>
+<div class="box12">
+<div class="box13">
+<div class="box14" class="clear_fix">
+  <ul class="ul1" > 
+    <li><a href="#">华为账号与云空间用户协议</a></li>
+    <li><a href="#">关于华为账号与云空间隐私说明</a></li>
+    <li><a href="#">常见问题</a></li>
+    <li><a href="#">Cookie</a></li>
+  </ul>
+</div>
+<p class="p2">Copyright © 2011-2020  华为软件技术有限公司  版权所有  保留一切权利  苏B2-20070200号 | 苏ICP备09062682号-9</p>
+</div>
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/tools.js"></script>
+
+<script>
+const oVcSpan1 = document.querySelector('[name = "vcSpan1"]');
+const oVcSpan2 = document.querySelector('[name = "vcSpan2"]');
+const oA = document.querySelector('[name="vc_a"]')
+const oIptName = document.querySelector('[name="name"]')
+const oIptPwd1 = document.querySelector('[name="pwd1"]')
+const oIptPwd2 = document.querySelector('[name="pwd2"]')
+const oIptVc = document.querySelector('[name="vc"]')
+const nameSpan = document.querySelector('[name="nameSpan"]')
+const nameSpan1 = document.querySelector('[name="nameSpan1"]')
+let bool;
+oA.addEventListener('click',()=>{
+  oVcSpan1.innerHTML = mySetVc();
+})
+oIptName.addEventListener('change' , ()=>{
+  let name = oIptName.value;
+  $.ajax({
+    url:'../server/goods_select.php',
+    type:'post',
+    data:{userName:name},
+    dataType:'json',
+    success:(result)=>{
+      //  console.log(result)
+      if(result.res === 1){
+         nameSpan.innerHTML = '账号可以使用';
+         bool = true;
+      }else{
+        nameSpan.innerHTML = '账号不可以使用'
+        bool = false;
+      }
+    }
+  })
+})
+const oBtn = document.querySelector('.button1');
+oBtn.addEventListener('click',()=>{
+  // if(bool = false) return;
+  let nameVal = oIptName.value;
+  let pwd1Val = oIptPwd1.value;
+  let pwd2Val = oIptPwd2.value;
+  let vcVal = oIptVc.value;
+  // 统一大小写
+  if(vcVal.toUpperCase() !== oVcSpan1.innerHTML.toUpperCase() ){
+    oVcSpan2.innerHTML = "验证码错误";
+    return;
+  }else{
+    oVcSpan2.innerHTML = '';
+  }
+  if(pwd1Val !== pwd2Val){
+    nameSpan1.innerHTML = '确认密码错误';
+    return;
+  }else{
+    nameSpan1.innerHTML = '';
+  }
+  $.ajax({
+    url:'../server/goods_res.php',
+    type:'post',
+    data:{userName:nameVal,userPwd:pwd1Val},
+    dataType:'json',
+    success: (result)=>{
+      console.log(result);
+      if(result.res === 1){
+        window.alert('注册成功，点击确定，跳转首页面')
+        window.location.href = './index.html';
+      }else{
+        window.alert('注册失败 用户名重复')
+       }
+    }
+  })
+})
+</script>
+</body>
+</html>
